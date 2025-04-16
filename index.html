@@ -2,28 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anatomy Quiz</title>
-  <!-- Tailwind CDN -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anatomy & Physiology Quiz</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-blue-50 text-gray-800 p-6">
-  <div id="intro" class="text-center">
-    <h1 class="text-3xl font-bold mb-4">🧠 Welcome to the Anatomy & Physiology Quiz!</h1>
-    <p class="mb-6">Test your knowledge on human anatomy. Click the button below to begin.</p>
+<body class="bg-gray-100 font-sans text-gray-800 p-6">
+
+  <!-- Intro Section -->
+  <div id="intro" class="max-w-xl mx-auto text-center">
+    <h1 class="text-3xl font-bold mb-4">Anatomy & Physiology Quiz 🧠</h1>
+    <p class="mb-6">Test your knowledge with 5 multiple-choice questions.</p>
     <button onclick="startQuiz()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Start Quiz</button>
   </div>
 
+  <!-- Quiz Section -->
   <div id="quiz" class="hidden max-w-xl mx-auto mt-6">
-    <form id="quizForm" class="space-y-6"></form>
-    <button type="submit" form="quizForm" class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Submit</button>
+    <form id="quizForm" class="bg-white p-6 rounded shadow space-y-4">
+      <p id="questionText" class="text-lg font-semibold"></p>
+      <div id="options" class="space-y-2"></div>
+      <button type="submit" id="nextBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Next</button>
+    </form>
   </div>
 
-  <div id="result" class="hidden text-center mt-8">
-    <h2 class="text-2xl font-semibold">Your Score:</h2>
-    <p id="scoreText" class="text-lg mt-4"></p>
-    <button onclick="location.reload()" class="mt-4 bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Try Again</button>
+  <!-- Result Section -->
+  <div id="result" class="hidden max-w-xl mx-auto mt-6 text-center bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-semibold mb-2">Your Results</h2>
+    <p id="scoreText" class="text-xl mb-4"></p>
+    <button onclick="location.reload()" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800">Play Again</button>
   </div>
 
   <script src="script.js"></script>
