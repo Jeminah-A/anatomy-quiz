@@ -20,6 +20,5 @@ An educational quiz app built with HTML, Tailwind CSS, and JavaScript. This inte
 
 1. Clone this repo:
 
-
 git clone https://github.com/Jeminah-A/anatomy-quiz.git
 cd anatomy-quiz
