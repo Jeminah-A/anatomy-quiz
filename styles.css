@@ -1,8 +1,0 @@
-body {
-    transition: background-color 0.3s ease;
-  }
-  
-  input[type="radio"] {
-    accent-color: #2563eb; /* Tailwind blue-600 */
-  }
-  
