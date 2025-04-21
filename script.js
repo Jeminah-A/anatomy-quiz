@@ -1,103 +1,138 @@
+// Define the array of questions, options, and correct answers
 const questions = [
   {
-    question: "What is the largest organ in the human body?",
-    options: ["Heart", "Liver", "Skin", "Lung"],
-    answer: "Skin"
+    question: "What is the largest organ in the human body?", // Question text
+    options: ["Heart", "Liver", "Skin", "Lung"], // List of possible answers
+    answer: "Skin" // The correct answer
   },
   {
-    question: "How many chambers does the human heart have?",
-    options: ["2", "3", "4", "5"],
-    answer: "4"
+    question: "How many chambers does the human heart have?", // Question text
+    options: ["2", "3", "4", "5"], // List of possible answers
+    answer: "4" // The correct answer
   },
   {
-    question: "Which bone is the longest in the human body?",
-    options: ["Femur", "Humerus", "Tibia", "Fibula"],
-    answer: "Femur"
+    question: "Which bone is the longest in the human body?", // Question text
+    options: ["Femur", "Humerus", "Tibia", "Fibula"], // List of possible answers
+    answer: "Femur" // The correct answer
   },
   {
-    question: "What part of the brain controls balance?",
-    options: ["Cerebellum", "Cerebrum", "Medulla", "Pons"],
-    answer: "Cerebellum"
+    question: "What part of the brain controls balance?", // Question text
+    options: ["Cerebellum", "Cerebrum", "Medulla", "Pons"], // List of possible answers
+    answer: "Cerebellum" // The correct answer
   },
   {
-    question: "Which blood cells help fight infection?",
-    options: ["Red cells", "Platelets", "White cells", "Plasma"],
-    answer: "White cells"
+    question: "Which blood cells help fight infection?", // Question text
+    options: ["Red cells", "Platelets", "White cells", "Plasma"], // List of possible answers
+    answer: "White cells" // The correct answer
   }
 ];
 
+// Initialize variables for tracking the current question index and the score
 let currentQuestionIndex = 0;
 let score = 0;
 
+// Function to start the quiz by hiding the intro screen and showing the quiz
 function startQuiz() {
-  document.getElementById('intro').classList.add('hidden');
-  document.getElementById('quiz').classList.remove('hidden');
-  renderQuestion();
+  document.getElementById("intro").classList.add("hidden"); // Hide the intro screen
+  document.getElementById("quiz").classList.remove("hidden"); // Show the quiz screen
+  renderQuestion(); // Render the first question
 }
 
+// Function to render the current question and options
 function renderQuestion() {
-  const current = questions[currentQuestionIndex];
-  const questionText = document.getElementById('questionText');
-  const optionsContainer = document.getElementById('options');
-  const nextBtn = document.getElementById('nextBtn');
+  const current = questions[currentQuestionIndex]; // Get the current question object
+  const questionText = document.getElementById("questionText"); // Element to display the question
+  const optionsContainer = document.getElementById("options"); // Container to hold the options
+  const nextBtn = document.getElementById("nextBtn"); // "Next" button
 
-  questionText.textContent = `Question ${currentQuestionIndex + 1}: ${current.question}`;
-  optionsContainer.innerHTML = '';
+  questionText.textContent = `Question ${currentQuestionIndex + 1}: ${current.question}`; // Display question text
+  optionsContainer.innerHTML = ""; // Clear previous options
+  nextBtn.disabled = true; // Disable the "Next" button until an answer is selected
 
-  current.options.forEach(option => {
-    const label = document.createElement('label');
-    label.className = "block bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200";
+  // Loop through each option and create radio buttons for each answer
+  current.options.forEach((option) => {
+    const label = document.createElement("label"); // Create a new label element
+    label.className = "block bg-gray-100 p-2 rounded cursor-pointer mb-2 transition-colors"; // Apply styling
 
-    const input = document.createElement('input');
-    input.type = 'radio';
-    input.name = 'answer';
-    input.value = option;
-    input.className = "mr-2";
-    input.required = true;
+    const input = document.createElement("input"); // Create a new radio input element
+    input.type = "radio"; // Set input type to "radio"
+    input.name = "answer"; // Group all the radio buttons by name (only one can be selected)
+    input.value = option; // Set the option text as the value of the radio button
+    input.className = "mr-2"; // Add some margin for the radio button
 
-    label.appendChild(input);
-    label.append(option);
-    optionsContainer.appendChild(label);
+    // Add event listener to handle the answer selection
+    input.addEventListener("change", () => handleAnswer(input));
+
+    label.appendChild(input); // Append the radio button to the label
+    label.append(option); // Append the option text to the label
+    optionsContainer.appendChild(label); // Append the label to the options container
   });
 
-  nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? 'Submit' : 'Next';
+  // Change the button text to "Submit" if it's the last question, otherwise show "Next"
+  nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? "Submit" : "Next";
 }
 
-document.getElementById('quizForm').addEventListener('submit', function (e) {
-  e.preventDefault();
+// Function to handle the answer selection
+function handleAnswer(selectedInput) {
+  const selectedAnswer = selectedInput.value; // Get the value of the selected option
+  const correctAnswer = questions[currentQuestionIndex].answer; // Get the correct answer
+  const allLabels = document.querySelectorAll("#options label"); // Get all labels for the options
 
-  const selected = document.querySelector('input[name="answer"]:checked');
-  if (!selected) return;
+  // Loop through each label to apply styles based on the answer
+  allLabels.forEach((label) => {
+    const input = label.querySelector("input"); // Get the input (radio button) inside the label
+    input.disabled = true; // Disable the radio button after an answer is selected
 
-  const userAnswer = selected.value;
-  const correctAnswer = questions[currentQuestionIndex].answer;
+    // If the input value matches the correct answer, set the background to green
+    if (input.value === correctAnswer) {
+      label.classList.remove("bg-gray-100");
+      label.classList.add("bg-green-200");
+    }
 
-  if (userAnswer === correctAnswer) {
+    // If the input is checked and is incorrect, set the background to red
+    if (input.checked && input.value !== correctAnswer) {
+      label.classList.remove("bg-gray-100");
+      label.classList.add("bg-red-200");
+    }
+  });
+
+  // If the selected answer is correct, increment the score
+  if (selectedAnswer === correctAnswer) {
     score++;
   }
 
-  currentQuestionIndex++;
+  // Enable the "Next" button after the answer is selected
+  document.getElementById("nextBtn").disabled = false;
+}
 
+// Event listener for the "Next" button, which moves to the next question or shows results
+document.getElementById("nextBtn").addEventListener("click", () => {
+  currentQuestionIndex++; // Move to the next question
   if (currentQuestionIndex < questions.length) {
-    renderQuestion();
+    renderQuestion(); // Render the next question
   } else {
-    showResults();
+    showResults(); // Show the results if all questions are answered
   }
 });
 
+// Function to show the final results after the quiz ends
 function showResults() {
-  document.getElementById('quiz').classList.add('hidden');
-  document.getElementById('result').classList.remove('hidden');
+  // Hide the quiz screen and show the results screen
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
 
-  let message = "";
+  const scoreText = document.getElementById("scoreText"); // Element to display the score text
+  let message = ""; // Message to display based on the score
 
-  if (score === 5) {
-    message = "🎉 Well done! Perfect score!";
+  // Set the message based on the score
+  if (score === questions.length) {
+    message = "🎉 Well done! Perfect score!"; // If the user got all questions right
   } else if (score >= 3) {
-    message = "👏 Great job!";
+    message = "👏 Great job!"; // If the user scored 3 or more
   } else {
-    message = "👍 Good try! Keep learning!";
+    message = "👍 Good try! Keep learning!"; // If the user scored less than 3
   }
 
-  document.getElementById('scoreText').textContent = `${message} You scored ${score} out of ${questions.length}.`;
+  // Display the message and the user's score
+  scoreText.textContent = `${message} You scored ${score} out of ${questions.length}.`;
 }
